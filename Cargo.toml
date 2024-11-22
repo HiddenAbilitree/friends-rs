@@ -6,4 +6,13 @@ edition = "2021"
 [dependencies]
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
+comrak = "0.29.0"
 tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-chrome = { version = "0.7", optional = true }
+tracing-panic = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+xdg = "2"
+
+[features]
+tracing = ["dep:tracing-chrome"]
