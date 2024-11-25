@@ -4,15 +4,13 @@ use std::path::PathBuf;
 use anyhow::{Context, Result};
 use comrak::{parse_document, Arena, Options};
 use tokio::fs;
-use tracing::{debug, span, Level};
+use tracing::debug;
 use xdg::BaseDirectories;
 
 const APP: &str = "friends-rs";
 
+#[tracing::instrument(level = "info")]
 pub async fn initial_data_load(base_dirs: &BaseDirectories) -> Result<()> {
-    let load_span = span!(Level::TRACE, "initial_data_load");
-    let _load_enter = load_span.enter();
-
     let friends_file = base_dirs.get_data_file(format!("{}/friends.md", APP));
 
     debug!(?friends_file, "resolved data path");
@@ -44,6 +42,7 @@ pub async fn initial_data_load(base_dirs: &BaseDirectories) -> Result<()> {
     Ok(())
 }
 
+#[tracing::instrument(level = "info")]
 async fn rebuild_index(contents: Option<Vec<u8>>, friends_file: &PathBuf) -> Result<()> {
     debug!("rebuilding index");
 
